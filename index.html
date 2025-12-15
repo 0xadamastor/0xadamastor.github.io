@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'none'; object-src 'none';">
+    <title>0xadamastor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-header">> navigation</div>
+        <a href="#whoami">> whoami</a>
+        <a href="#about">> about</a>
+        <a href="#skills">> skills</a>
+        <a href="#certifications">> certifications</a>
+        <a href="#projects">> projects</a>
+        <a href="#paths">> paths</a>
+        <a href="#working">> working on</a>
+        <a href="#milestones">> milestones</a>
+    </nav>
+
+    <main>
+        <section id="whoami" class="section hero">
+            <div class="hero-content">
+                <h1 class="name">0xadamastor</h1>
+                <p class="title">Cybersecurity Researcher & Ethical Hacker</p>
+                <p class="status" id="status"></p>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-box">
+                    <span class="label">> location</span>
+                    <span class="value">Porto, PT</span>
+                </div>
+                <div class="info-box">
+                    <span class="label">> github</span>
+                    <a href="https://github.com/0xadamastor" target="_blank" class="value link">github.com/0xadamastor</a>
+                </div>
+                <div class="info-box">
+                    <span class="label">> linkedin</span>
+                    <a href="https://linkedin.com/in/0xadamastor" target="_blank" class="value link">linkedin.com/in/0xadamastor</a>
+                </div>
+                <div class="info-box">
+                    <span class="label">> slack</span>
+                    <span class="value">@0xadamastor</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2 class="section-title">> about</h2>
+            <p class="about-text">
+                Cybersecurity researcher focused on vulnerability analysis, exploit development, and security automation. 
+                Passionate about offensive security, reverse engineering, and building tools that matter.
+            </p>
+            <div class="focus-grid">
+                <div class="focus-item">> penetration testing</div>
+                <div class="focus-item">> malware analysis</div>
+                <div class="focus-item">> web exploitation</div>
+                <div class="focus-item">> binary exploitation</div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <h2 class="section-title">> skills</h2>
+            
+            <div class="skill-categories">
+                <button class="category-btn active" data-category="all">> all</button>
+            </div>
+            
+            <div class="skills-grid">
+            </div>
+        </section>
+
+        <section id="certifications" class="section">
+            <h2 class="section-title">> certifications</h2>
+            <div class="cert-list">
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <h2 class="section-title">> projects</h2>
+            
+            <div class="project-controls">
+                <div class="project-sort">
+                    <span class="sort-label">> show:</span>
+                    <button class="sort-btn" data-sort="all">all</button>
+                    <button class="sort-btn active" data-sort="stars">stars</button>
+                    <button class="sort-btn" data-sort="recent">recent</button>
+                </div>
+            </div>
+            
+            <div id="projects-container" class="projects-grid">
+                <div class="loading">> loading projects from github...</div>
+            </div>
+        </section>
+
+        <section id="paths" class="section">
+            <h2 class="section-title">> paths</h2>
+            <div class="timeline">
+            </div>
+        </section>
+
+        <section id="working" class="section">
+            <h2 class="section-title">> working on</h2>
+            <div class="current-grid">
+            </div>
+        </section>
+
+        <section id="milestones" class="section">
+            <h2 class="section-title">> milestones</h2>
+            <div id="milestones-grid" class="milestones-gallery"></div>
+        </section>
+
+        <footer class="footer">
+            <p>> 0xadamastor © 2025</p>
+        </footer>
+    </main>
+
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-layer layer-1"></div>
+            <div class="modal-layer layer-2"></div>
+            <div class="modal-layer layer-3"></div>
+            <div class="modal-content">
+                <button class="modal-close">> close [ESC]</button>
+                <div id="modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

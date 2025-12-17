@@ -1,3 +1,44 @@
+let currentLang = 'en';
+
+const translations = {
+    en: {
+        'nav-header': '> navigation',
+        'nav-whoami': '> whoami',
+        'nav-about': '> about',
+        'nav-skills': '> skills',
+        'nav-certifications': '> certifications',
+        'nav-projects': '> projects',
+        'nav-paths': '> path',
+        'nav-working': '> working on',
+        'nav-milestones': '> milestones',
+        'section-about': '> about',
+        'section-skills': '> skills',
+        'section-certifications': '> certifications',
+        'section-projects': '> projects',
+        'section-paths': '> path',
+        'section-working': '> working on',
+        'section-milestones': '> milestones'
+    },
+    pt: {
+        'nav-header': '> navigation',
+        'nav-whoami': '> whoami',
+        'nav-about': '> sobre',
+        'nav-skills': '> skills',
+        'nav-certifications': '> certificações',
+        'nav-projects': '> projetos',
+        'nav-paths': '> percurso',
+        'nav-working': '> no momento',
+        'nav-milestones': '> conquistas',
+        'section-about': '> sobre',
+        'section-skills': '> skills',
+        'section-certifications': '> certificações',
+        'section-projects': '> projetos',
+        'section-paths': '> percurso',
+        'section-working': '> no momento',
+        'section-milestones': '> conquistas'
+    }
+};
+
 function escapeHtml(unsafe) {
     const div = document.createElement('div');
     div.textContent = unsafe;
@@ -27,7 +68,7 @@ async function loadWelcomeMessages() {
 }
 
 function typeWriter() {
-    const baseText = '> online | ';
+    const baseText = '> We\'re connected | ';
     const currentMessage = welcomeMessages[currentMessageIndex];
     
     statusElement.textContent = '';
@@ -90,9 +131,9 @@ function typeWriter() {
 
 loadWelcomeMessages();
 
-async function loadSkills() {
+async function loadSkills(lang = 'en') {
     try {
-        const response = await fetch('skills/skills');
+        const response = await fetch(`skills/${lang}/skills`);
         const text = await response.text();
         const lines = text.split('\n').filter(line => line.trim() !== '');
         
@@ -114,8 +155,9 @@ async function loadSkills() {
             }
         });
         
+        const allText = lang === 'en' ? 'all' : 'todos';
         const categoriesDiv = document.querySelector('.skill-categories');
-        categoriesDiv.innerHTML = '<button class="category-btn active" data-category="all">> all</button>';
+        categoriesDiv.innerHTML = `<button class="category-btn active" data-category="all">> ${allText}</button>`;
         Array.from(categories).sort().forEach(cat => {
             const btn = document.createElement('button');
             btn.className = 'category-btn';
@@ -153,13 +195,59 @@ async function loadSkills() {
         
         setTimeout(() => setupSkillFilters(), 0);
     } catch (error) {
-        console.error('Error loading skills:', error);
     }
 }
 
 function setupSkillFilters() {
     const categoryBtns = document.querySelectorAll('.category-btn');
     const skillItems = document.querySelectorAll('.skill-item');
+    const skillsGrid = document.querySelector('.skills-grid');
+    const showMoreContainer = document.querySelector('.show-more-container');
+    const showMoreBtn = document.getElementById('show-more-btn');
+    let isExpanded = false;
+
+    function updateShowMoreButton(category) {
+        if (category === 'all') {
+            const visibleCount = Array.from(skillItems).filter(item => !item.classList.contains('hidden')).length;
+            if (visibleCount > 16) {
+                showMoreContainer.style.display = 'block';
+                if (!isExpanded) {
+                    skillsGrid.classList.add('collapsed');
+                }
+            } else {
+                showMoreContainer.style.display = 'none';
+                skillsGrid.classList.remove('collapsed');
+            }
+        } else {
+            showMoreContainer.style.display = 'none';
+            skillsGrid.classList.remove('collapsed');
+            isExpanded = false;
+        }
+    }
+
+    function updateButtonText() {
+        const lang = currentLang;
+        if (isExpanded) {
+            showMoreBtn.textContent = lang === 'en' ? '> show less' : '> mostrar menos';
+        } else {
+            showMoreBtn.textContent = lang === 'en' ? '> show more' : '> mostrar mais';
+        }
+    }
+
+    updateButtonText();
+    updateShowMoreButton('all');
+
+    showMoreBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        if (isExpanded) {
+            skillsGrid.classList.remove('collapsed');
+        } else {
+            skillsGrid.classList.add('collapsed');
+            const skillsSection = document.getElementById('skills');
+            skillsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        updateButtonText();
+    });
 
     categoryBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -168,29 +256,49 @@ function setupSkillFilters() {
             categoryBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
-            skillItems.forEach((item, index) => {
-                if (category === 'all' || item.dataset.category === category) {
-                    setTimeout(() => {
-                        item.classList.remove('hidden');
-                        item.style.animation = 'fadeInUp 0.4s ease forwards';
-                    }, index * 30);
-                } else {
-                    item.classList.add('hidden');
-                }
+            isExpanded = false;
+            
+            skillItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.95)';
             });
+            
+            setTimeout(() => {
+                skillItems.forEach(item => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+                
+                updateShowMoreButton(category);
+                updateButtonText();
+                
+                let visibleIndex = 0;
+                skillItems.forEach(item => {
+                    if (!item.classList.contains('hidden')) {
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                        }, visibleIndex * 20);
+                        visibleIndex++;
+                    }
+                });
+            }, 200);
         });
     });
 }
 
-loadSkills();
+loadSkills(currentLang);
 
 const modal = document.getElementById('modal-overlay');
 const modalBody = document.getElementById('modal-body');
 const modalClose = document.querySelector('.modal-close');
 
-async function loadCertificates() {
+async function loadCertificates(lang = 'en') {
     try {
-        const response = await fetch('certs/certs');
+        const response = await fetch(`certs/${lang}/certs`);
         const text = await response.text();
         const lines = text.split('\n').filter(line => line.trim() !== '');
         
@@ -231,8 +339,15 @@ async function loadCertificates() {
                 hintSpan.className = 'cert-hint';
                 hintSpan.textContent = 'click to view';
                 
+                const certImg = document.createElement('img');
+                certImg.className = 'cert-icon';
+                certImg.src = `assets/${file.replace('.pdf', '.png')}`;
+                certImg.alt = '';
+                certImg.onerror = function() { this.style.display = 'none'; };
+                
                 certDiv.appendChild(nameSpan);
                 certDiv.appendChild(hintSpan);
+                certDiv.appendChild(certImg);
                 certList.appendChild(certDiv);
             }
         });
@@ -273,11 +388,10 @@ async function loadCertificates() {
             });
         });
     } catch (error) {
-        console.error('Error loading certificates:', error);
     }
 }
 
-loadCertificates();
+loadCertificates(currentLang);
 
 function openModal(content) {
     modalBody.innerHTML = content;
@@ -319,11 +433,9 @@ async function loadContributedRepos() {
                     contributedRepos.add(`${match[1]}/${match[2]}`);
                 }
             } catch (e) {
-                console.warn('Invalid URL:', url);
             }
         });
     } catch (error) {
-        console.error('Failed to load contributed repos');
     }
 }
 
@@ -359,7 +471,6 @@ async function fetchGitHubProjects() {
         displayProjects();
         
     } catch (error) {
-        console.error('Error fetching repositories:', error);
         container.innerHTML = '<div class="loading">> failed to load projects</div>';
     }
 }
@@ -458,9 +569,38 @@ document.querySelectorAll('.sort-btn').forEach(btn => {
 
 fetchGitHubProjects();
 
-async function loadPaths() {
+async function loadAbout(lang = 'en') {
     try {
-        const response = await fetch('paths/paths');
+        const response = await fetch(`about/${lang}/about`);
+        const text = await response.text();
+        const parts = text.split('_-_');
+        
+        if (parts.length === 2) {
+            const aboutText = parts[0].trim();
+            const focusItems = parts[1].trim().split('\n').filter(line => line.trim() !== '');
+            
+            const aboutParagraph = document.querySelector('.about-text');
+            aboutParagraph.textContent = aboutText;
+            
+            const focusGrid = document.querySelector('.focus-grid');
+            focusGrid.innerHTML = '';
+            
+            focusItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'focus-item';
+                div.textContent = `> ${item.trim()}`;
+                focusGrid.appendChild(div);
+            });
+        }
+    } catch (error) {
+    }
+}
+
+loadAbout(currentLang);
+
+async function loadPath(lang = 'en') {
+    try {
+        const response = await fetch(`path/${lang}/path`);
         const text = await response.text();
         const lines = text.split('\n').filter(line => line.trim() !== '');
         
@@ -490,15 +630,14 @@ async function loadPaths() {
             }
         });
     } catch (error) {
-        console.error('Error loading paths:', error);
     }
 }
 
-loadPaths();
+loadPath(currentLang);
 
-async function loadWorkingOn() {
+async function loadWorkingOn(lang = 'en') {
     try {
-        const response = await fetch('workingOn/workingOn');
+        const response = await fetch(`workingOn/${lang}/workingOn`);
         const text = await response.text();
         const lines = text.split('\n').filter(line => line.trim() !== '');
         
@@ -528,19 +667,18 @@ async function loadWorkingOn() {
             }
         });
     } catch (error) {
-        console.error('Error loading working on:', error);
     }
 }
 
-loadWorkingOn();
+loadWorkingOn(currentLang);
 
 const milestoneDataMap = new WeakMap();
 
-async function loadMilestones() {
+async function loadMilestones(lang = 'en') {
     const grid = document.getElementById('milestones-grid');
     
     try {
-        const response = await fetch('milestones/milestones');
+        const response = await fetch(`milestones/${lang}/milestones`);
         const text = await response.text();
         const files = text.split('\n').filter(line => line.trim() !== '');
         
@@ -635,7 +773,6 @@ async function loadMilestones() {
             });
         });
     } catch (error) {
-        console.error('Error loading milestones:', error);
         grid.innerHTML = '<p style="color: #555; text-align: center;">failed to load milestones</p>';
     }
 }
@@ -692,7 +829,7 @@ function openMilestoneModal(milestone) {
     document.body.style.overflow = 'hidden';
 }
 
-loadMilestones();
+loadMilestones(currentLang);
 
 document.querySelectorAll('.nav a').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
@@ -753,3 +890,33 @@ revealElements.forEach(el => {
     el.classList.add('reveal');
     observer.observe(el);
 });
+
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'pt' : 'en';
+    
+    const langToggle = document.getElementById('lang-toggle');
+    if (currentLang === 'en') {
+        langToggle.innerHTML = '<span class="lang-active">EN</span> / <span class="lang-inactive">PT</span>';
+    } else {
+        langToggle.innerHTML = '<span class="lang-inactive">EN</span> / <span class="lang-active">PT</span>';
+    }
+    
+    document.querySelectorAll('[data-i18n]').forEach(element => {
+        const key = element.getAttribute('data-i18n');
+        if (translations[currentLang][key]) {
+            element.textContent = translations[currentLang][key];
+        }
+    });
+    
+    loadAbout(currentLang);
+    loadSkills(currentLang);
+    loadPath(currentLang);
+    loadWorkingOn(currentLang);
+    loadCertificates(currentLang);
+    loadMilestones(currentLang);
+}
+
+const langToggleBtn = document.getElementById('lang-toggle');
+if (langToggleBtn) {
+    langToggleBtn.addEventListener('click', toggleLanguage);
+}

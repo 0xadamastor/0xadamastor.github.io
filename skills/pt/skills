@@ -1,0 +1,52 @@
+linguas_-_python_-_90
+linguas_-_c/c++_-_55
+linguas_-_assembly_-_20
+linguas_-_bash_-_85
+linguas_-_javascript_-_75
+linguas_-_java_-_50
+
+ferramentas_-_metasploit_-_60
+ferramentas_-_burp suite/caido_-_80
+ferramentas_-_ghidra_-_50
+ferramentas_-_wireshark_-_90
+ferramentas_-_nmap_-_90
+ferramentas_-_sqlmap_-_80
+ferramentas_-_pwntools_-_70
+ferramentas_-_hashcat_-_80
+ferramentas_-_john the ripper_-_80
+ferramentas_-_hydra_-_70
+ferramentas_-_impacket_-_70
+ferramentas_-_crackmapexec_-_80
+ferramentas_-_ffuf_-_85
+ferramentas_-_gobuster_-_85
+
+ferramentas_-_splunk_-_70
+ferramentas_-_elk stack_-_70
+ferramentas_-_osquery_-_70
+ferramentas_-_wazuh_-_70
+
+sistemas_-_linux_-_95
+sistemas_-_windows_-_80
+sistemas_-_docker_-_80
+sistemas_-_kubernetes_-_40
+sistemas_-_aws_-_50
+
+conceitos_-_web exploit_-_75
+conceitos_-_escalação de privilegios_-_75
+conceitos_-_ataques active directory_-_65
+conceitos_-_analise de trafego de rede_-_90
+conceitos_-_resposta a incidentes_-_60
+conceitos_-_threat hunting_-_60
+conceitos_-_forense digital_-_60
+conceitos_-_analise de malware_-_50
+conceitos_-_criptografia_-_40
+conceitos_-_engenharia reversa_-_40
+
+soft_-_comunicacao_-_85
+soft_-_trabalho em equipa_-_90
+soft_-_resolucao de problemas_-_80
+soft_-_aprendizagem rapida_-_90
+soft_-_organizacao_-_75
+soft_-_adaptabilidade_-_80
+soft_-_pensamento critico_-_80
+soft_-_gestao de tempo_-_75

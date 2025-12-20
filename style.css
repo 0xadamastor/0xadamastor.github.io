@@ -889,21 +889,93 @@ main {
     }
 }
 
+/* Mobile menu toggle button */
+.mobile-menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1002;
+    background: none;
+    border: 1px solid #837A6C;
+    padding: 10px;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    border-color: #f2f2f2;
+    background-color: #0a0a0a;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #837A6C;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover span {
+    background-color: #f2f2f2;
+}
+
+.mobile-menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
 @media (max-width: 992px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+    
     .nav {
-        position: relative;
-        width: 100%;
-        height: auto;
-        flex-direction: row;
-        flex-wrap: wrap;
-        border-right: none;
-        border-bottom: 1px solid #222;
-        padding: 20px;
-        gap: 10px;
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 280px;
+        height: 100vh;
+        flex-direction: column;
+        border-right: 1px solid #837A6C;
+        border-bottom: none;
+        padding: 80px 0 40px 0;
+        gap: 5px;
+        background-color: #000;
+        transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow-y: auto;
+        z-index: 1001;
+    }
+    
+    .nav.active {
+        left: 0;
+        box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
     }
     
     .nav-header {
-        display: none;
+        display: block;
+    }
+    
+    .nav a {
+        padding: 15px 25px;
+        font-size: 15px;
+    }
+    
+    .lang-toggle {
+        margin: 20px 25px;
     }
     
     main {
@@ -952,14 +1024,25 @@ main {
 }
 
 @media (max-width: 576px) {
+    .mobile-menu-toggle {
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+    }
+    
+    .mobile-menu-toggle span {
+        width: 20px;
+    }
+    
     .nav {
-        padding: 15px;
-        gap: 8px;
+        width: 250px;
     }
     
     .nav a {
-        font-size: 13px;
-        padding: 10px 15px;
+        font-size: 14px;
+        padding: 12px 20px;
     }
     
     .section {

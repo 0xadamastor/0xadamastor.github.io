@@ -920,3 +920,27 @@ const langToggleBtn = document.getElementById('lang-toggle');
 if (langToggleBtn) {
     langToggleBtn.addEventListener('click', toggleLanguage);
 }
+
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+const nav = document.getElementById('nav');
+
+if (mobileMenuToggle && nav) {
+    mobileMenuToggle.addEventListener('click', () => {
+        mobileMenuToggle.classList.toggle('active');
+        nav.classList.toggle('active');
+    });
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenuToggle.classList.remove('active');
+            nav.classList.remove('active');
+        });
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+            mobileMenuToggle.classList.remove('active');
+            nav.classList.remove('active');
+        }
+    });
+}

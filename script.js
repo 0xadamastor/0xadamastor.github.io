@@ -314,8 +314,8 @@ async function loadCertificates(lang = 'en') {
                 const file = parts[2].trim().replace(/[^a-zA-Z0-9._-]/g, '');
                 let description = parts.length === 4 ? parts[3].trim() : '';
                 
-                if (description.length > 500) {
-                    description = description.substring(0, 500);
+                if (description.length > 2000) {
+                    description = description.substring(0, 2000);
                 }
                 
                 if (!file || file.includes('..')) return;
@@ -692,8 +692,8 @@ async function loadMilestones(lang = 'en') {
             const dateAndExt = parts[1].trim();
             let description = parts.length === 3 ? parts[2].trim() : '';
             
-            if (description.length > 500) {
-                description = description.substring(0, 500);
+            if (description.length > 2000) {
+                description = description.substring(0, 2000);
             }
             
             const match = dateAndExt.match(/^(\d{1,2})-(\d{1,2})-(\d{4})\.(jpg|jpeg|png|gif|pdf)$/i);

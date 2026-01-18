@@ -478,6 +478,7 @@ main {
     grid-template-columns: repeat(2, 1fr);
     gap: 25px;
     max-width: 1100px;
+    align-items: start;
 }
 
 .loading {
@@ -493,7 +494,6 @@ main {
     gap: 15px;
     background-color: #050505;
     transition: all 0.3s ease;
-    min-height: 200px;
 }
 
 .project-card:hover {
@@ -513,6 +513,22 @@ main {
     color: #888;
     line-height: 1.6;
     flex-grow: 1;
+}
+
+.project-thumbnail {
+    max-width: 150px;
+    max-height: 100px;
+    object-fit: contain;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+.project-thumbnail-large {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    margin: 15px 0;
+    border-radius: 4px;
 }
 
 .project-meta {

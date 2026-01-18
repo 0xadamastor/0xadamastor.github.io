@@ -506,6 +506,7 @@ function displayProjects() {
         card.className = 'project-card';
         card.style.opacity = '0';
         card.style.transform = 'translateY(20px)';
+        card.style.cursor = 'pointer';
         
         const name = document.createElement('div');
         name.className = 'project-name';
@@ -514,6 +515,22 @@ function displayProjects() {
         const desc = document.createElement('div');
         desc.className = 'project-desc';
         desc.textContent = repo.description || 'No description available';
+        
+        const thumbnail = document.createElement('img');
+        thumbnail.className = 'project-thumbnail';
+        thumbnail.src = `assets/projects/${repo.name}_icon.png`;
+        thumbnail.alt = '';
+        thumbnail.onerror = function() { 
+            this.src = `assets/projects/${repo.name}_icon.gif`;
+            this.onerror = function() {
+                this.className = 'project-thumbnail-large';
+                this.src = `assets/projects/${repo.name}.png`;
+                this.onerror = function() {
+                    this.src = `assets/projects/${repo.name}.gif`;
+                    this.onerror = function() { this.style.display = 'none'; };
+                };
+            };
+        };
         
         const meta = document.createElement('div');
         meta.className = 'project-meta';
@@ -529,10 +546,12 @@ function displayProjects() {
         meta.appendChild(updated);
         
         const link = document.createElement('a');
+        let repoUrl = '#';
         try {
             const url = new URL(repo.html_url);
             if (url.hostname === 'github.com') {
-                link.href = repo.html_url;
+                repoUrl = repo.html_url;
+                link.href = repoUrl;
             } else {
                 link.href = '#';
             }
@@ -543,8 +562,15 @@ function displayProjects() {
         link.className = 'project-link';
         link.textContent = '> view on github';
         
+        card.addEventListener('click', (e) => {
+            if (e.target !== link && !link.contains(e.target)) {
+                window.open(repoUrl, '_blank');
+            }
+        });
+        
         card.appendChild(name);
         card.appendChild(desc);
+        card.appendChild(thumbnail);
         card.appendChild(meta);
         card.appendChild(link);
         
@@ -840,7 +866,7 @@ document.querySelectorAll('.nav a').forEach(anchor => {
         if (targetElement) {
             targetElement.scrollIntoView({
                 behavior: 'smooth',
-                block: 'center'
+                block: 'start'
             });
         }
     });
